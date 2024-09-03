@@ -4,7 +4,7 @@ module trace::my_module {
         owner: u64,
         video: u64,
         fake: bool
-    }
+    } 
 
 
     public struct List has key,store{
