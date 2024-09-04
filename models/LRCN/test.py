@@ -8,7 +8,8 @@ import datetime as dt
 import tensorflow as tf
 from collections import deque
 import matplotlib.pyplot as plt
-
+from flask import Flask, request, jsonify, send_file   
+from flask_cors import CORS
 from moviepy.editor import *
 
 from sklearn.model_selection import train_test_split
@@ -19,9 +20,8 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.utils import plot_model
 
-
-# convlstm_model = tf.keras.models.load_model('convlstm_model.h5')
-# convlstm_model.summary()
+app = Flask(__name__)
+CORS(app)
 
 IMAGE_HEIGHT, IMAGE_WIDTH = 64, 64
 
@@ -29,13 +29,23 @@ CLASSES_LIST = ["RealVid", "SyntheticVid"]
 
 SEQUENCE_LENGTH = 40
 
-lrcn_model = tf.keras.models.load_model('LRCN/models/LRCN_DF_40SL_100ep.h5')
-lrcn_model.summary()
-
-input_video_path = "Celeb-DF-v2/Synthetic/id0_id2_0006.mp4"
+lrcn_model = tf.keras.models.load_model('/Users/hiteshgupta/Documents/SIH24/ML_Models/LRCN/models/LRCN_DF_40SL_100ep_2.h5')
 
 
-def predict_on_video(video_file_path, output_file_path, SEQUENCE_LENGTH):
+@app.route('/predict', methods=['POST'])
+def predict_on_video():
+    if 'video' not in request.files:
+        return jsonify({'error': 'No file part'})
+    
+    video = request.files['video']
+    
+    # Save the video file to the disk.
+    video_file_path = 'input_video.mp4'
+    video.save(video_file_path)
+    
+    # Get the output file path.
+    output_file_path = 'output_video.mp4'
+    
     video_reader = cv2.VideoCapture(video_file_path)
 
     # Get the width and height of the video.
@@ -93,8 +103,9 @@ def predict_on_video(video_file_path, output_file_path, SEQUENCE_LENGTH):
     video_reader.release()
     video_writer.release()
     
+    # return ok in json format
+    return jsonify({'ok': 'Video Successfully Processed'})
     
-output_video_path = 'out1.mp4'
-predict_on_video(input_video_path, output_video_path, SEQUENCE_LENGTH)
-# Display the output video.
-# VideoFileClip(output_video_path, audio=False, target_resolution=(300,None)).ipython_display()
+
+if __name__ == '__main__':
+    app.run(debug=True) 
