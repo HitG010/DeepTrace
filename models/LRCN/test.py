@@ -32,27 +32,6 @@ SEQUENCE_LENGTH = 40
 lrcn_model = tf.keras.models.load_model('LRCN/models/LRCN_DF_40SL_100ep.h5')
 lrcn_model.summary()
 
-
-def download_youtube_video(video_url, output_file_name):
-    # Create a Pafy object using the video URL.
-    video = pafy.new(video_url)
-    title = video.title
-    # Retrieve the best available video stream.
-    best_video_stream = video.getbest()
-    output_file_path = f'{output_file_name}/{title}.mp4'
-    # Download the video stream to the specified output file.
-    best_video_stream.download(filepath=output_file_path, quiet=True)
-    
-    return title
-
-
-# Download a YouTube video using the URL.
-# test_videos_directory = 'test_videos'
-# os.makedirs(test_videos_directory, exist_ok=True)
-
-# # Download a YouTube video using the URL.
-# title = download_youtube_video('https://www.youtube.com/watch?v=8u0qjmHIOcE', test_videos_directory)
-
 input_video_path = "Celeb-DF-v2/Synthetic/id0_id2_0006.mp4"
 
 
