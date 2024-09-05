@@ -1,42 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
+  /* text-align: center; */
+  font-family: 'Urbanist', sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.circle1 {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  animation: pulseGlow 5s infinite ease-in-out;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.circle2 {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  animation: pulseGlow 7s infinite ease-in-out;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.circle3 {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  animation: pulseGlow 9s infinite ease-in-out;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes pulseGlow {
+  0%, 100% {
+    border-color: rgba(241, 243, 245, 0.03);
+    box-shadow: 0 0 0px 0px rgba(241, 243, 245, 0.05);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    border-color: rgba(241, 243, 245, 0.1);
+    box-shadow: 0 0 5px 5px rgba(241, 243, 245, 0.05);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
