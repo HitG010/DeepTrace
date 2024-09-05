@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from './components/Navbar/Navbar.jsx'
 import {ArrowRight} from 'lucide-react'
 import Landing from './Landing.jsx'
-import Predict from './Predict.jsx'
+import Predict from './predict.jsx'
 
 function App() {
   return (
