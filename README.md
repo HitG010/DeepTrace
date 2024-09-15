@@ -14,11 +14,6 @@ DeepTrace integrates blockchain technology, similar to C2PA, to securely embed v
 - **Immutable Records**: Ensures that once a video is created or modified, its authenticity and history are permanently recorded.
 - **Traceability**: Easy tracing of the video's origins and modifications, ensuring content trustworthiness and transparency.
 
-### Metadata-Embedded Blockchain
-DeepTrace’s Metadata-Embedded Blockchain allows for:
-- **Integrated Verification**: Embeds blockchain verification within the video’s metadata, ensuring that authenticity is an inherent part of the video file.
-- **Content Integrity**: Maintains the integrity of content by securely recording any changes or updates, allowing for transparent verification processes.
-
 
 
 
