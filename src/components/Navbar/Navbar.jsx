@@ -21,8 +21,8 @@ const Navbar = () => {
 
                 <li><a className="text-sm text-gray-400 hover:text-gray-500" href="#">Browser Extension</a></li>
             </ul>
-            <a className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2.5 px-5 bg-[#f1f3f5] hover:bg-[#ddd] text-4 text-gray-900 font-bold  rounded-full transition duration-200" href="#">Log In</a>
-            <a className="hidden lg:inline-block lg:mr-3 py-2.5 px-5 border border-[#787878] hover:bg-[#252525] text-4 text-[#f1f3f5] font-bold  rounded-full transition duration-200" href="#">Sign Up</a>
+            <a className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2.5 px-5 bg-[#f1f3f5] hover:bg-[#ddd] text-4 text-gray-900 font-bold  rounded-full transition duration-200" href="/login">Log In</a>
+            <a className="hidden lg:inline-block lg:mr-3 py-2.5 px-5 border border-[#787878] hover:bg-[#252525] text-4 text-[#f1f3f5] font-bold  rounded-full transition duration-200" href="/signup">Sign Up</a>
         </nav>
     )
 }

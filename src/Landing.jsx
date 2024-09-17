@@ -17,7 +17,7 @@ function Landing() {
     </div>
       <Navbar />
       <div className='z-10 text-center flex flex-col gap-4 justify-center items-center'>
-      <a className='flex rounded-full border border-[#78787836] px-3 py-1 scale-[0.9]' href='#'>
+      <a className='flex rounded-full border border-[#78787836] px-3 py-1 scale-[0.9]' href='/login'>
         <div className='text-gray-400'>Always be sure of what you see. </div><div className='italic ml-1'> Get Started</div>
         </a>
         <h1 className='font-semibold text-6xl '>Exposing Digital Deception. <br/>
@@ -25,7 +25,7 @@ function Landing() {
         <p className='text-lg font-400'>Leveraging the power of Blockchain and Machine Learning for detection of deep fake <br/> videos over the internet!</p>
         <div className='flex justify-center items-center gap-4'>
           <button className='hidden lg:inline-block py-2.5 px-5 bg-[#f1f3f5] hover:bg-[#ddd] text-[1.185rem] text-gray-900 font-bold  rounded-full transition duration-200' onClick={()=>{
-            window.location.href = '/predict'
+            window.location.href = '/login'
           }}>
             <div className='flex items-center gap-2'>Try Now <ArrowRight size={20} /></div>
           </button>
