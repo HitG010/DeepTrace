@@ -1,0 +1,7 @@
+Flask
+torch
+efficientnet-pytorch
+albumentations
+numpy
+scipy
+requests
