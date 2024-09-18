@@ -20,8 +20,11 @@ function Home() {
       <div className='text-3xl'>Hello {user.username} 👋</div>
       <div className='text-6xl font-bold'>This is the homepage</div>
       <button onClick={() => {
+        window.location.href = '/upload-video'
+      }} className='px-4 py-2 bg-[#f1f3f5] text-[#1e1e1e] rounded-full font-semibold text-xl mt-6'>Test A Video</button>
+      <button onClick={() => {
         window.location.href = 'http://localhost:5000/logout'
-      }} className='px-4 py-2 bg-[#f1f3f5] text-[#1e1e1e] rounded-full font-semibold text-xl mt-6'>Logout</button>
+      }} className='px-4 py-2 bg-[#252525] text-[#f1f3f5] rounded-full font-semibold text-xl mt-6'>Logout</button>
     </div>
   )
 }
