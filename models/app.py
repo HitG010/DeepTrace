@@ -34,7 +34,7 @@ train_db = 'DFDC'
 app = Flask(__name__)
 CORS(app)
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'mps' if torch.mps.is_available() else 'cpu')
+device = torch.device('cpu')
 face_policy = 'scale'
 face_size = 224
 frames_per_video = 100
