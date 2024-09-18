@@ -5,3 +5,4 @@ albumentations
 numpy
 scipy
 requests
+flask_cors
