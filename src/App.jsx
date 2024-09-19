@@ -8,6 +8,7 @@ import Home from "./components/Homepage/Homepage.jsx";
 import Signup from "./components/Signup/Signup.jsx";
 import Login from "./components/Login/Login.jsx";
 import VideoUpload from "./prediction.jsx";
+import Result from "./components/Result.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/predict" element={<Predict />} />
         <Route path="/upload-video" element={<VideoUpload />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </Router>
   );

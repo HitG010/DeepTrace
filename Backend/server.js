@@ -15,7 +15,7 @@ const mongoURI = 'mongodb+srv://bindrakartik64:tazQbHPsNKxybIps@deeptrace.km0n1.
 mongoose.connect(mongoURI, {
     dbName: 'DeepTrace',
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    // useUnifiedTopology: true
 })
 .then(() => {
     console.log('Connected to MongoDB');
