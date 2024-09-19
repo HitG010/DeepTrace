@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { uploadVideo } from "./contractDeets.jsx";
 
 function VideoUpload() {
   const navigate = useNavigate();
@@ -44,6 +45,13 @@ function VideoUpload() {
       const data = await response.json();
       console.log(data);
       setResult(data);
+
+      //check if the video result is real or deepfake
+      if (data.mean_score < 0.5) {
+        uploadVideo(file, "Real");
+      } else {
+        uploadVideo(file, "Deepfake");
+      }
 
       navigate('/result', {state: {result: data, fileName: fileName}});
 
