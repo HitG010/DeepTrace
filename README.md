@@ -21,9 +21,9 @@ DeepTrace integrates blockchain technology, similar to C2PA, to securely embed v
 ### How to set up Python backend
 
 ```
+pip install -r requirements.txt
 cd models
 git clone https://github.com/polimi-ispl/icpr2020dfdc
-pip install -r requirements.txt
 cd icpr2020dfdc/notebook
 python3 ../../app.py
 ```
