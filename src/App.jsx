@@ -9,6 +9,7 @@ import Signup from "./components/Signup/Signup.jsx";
 import Login from "./components/Login/Login.jsx";
 import VideoUpload from "./prediction.jsx";
 import Result from "./components/Result.jsx";
+// import {ContractDeets} from "./contractDeets.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/predict" element={<Predict />} />
         <Route path="/upload-video" element={<VideoUpload />} />
         <Route path="/result" element={<Result />} />
+        {/* <Route path="/contract" element={<ContractDeets />} /> */}
       </Routes>
     </Router>
   );
