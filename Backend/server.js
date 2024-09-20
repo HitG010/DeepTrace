@@ -16,7 +16,7 @@ mongoose
   .connect(mongoURI, {
     dbName: "DeepTrace",
     useNewUrlParser: true,
-    // useUnifiedTopology: true
+    // useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Connected to MongoDB");
