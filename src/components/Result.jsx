@@ -29,7 +29,7 @@ function Result() {
                 Deepfake
               </div>
             )}
-            <p className="text-xl font-medium flex gap-2 text-center">
+            <p className="text-xl font-medium flex gap-2 text-center items-center">
               {Number(result.mean_score.toFixed(2) * 100)}%
               {/* <InfoIcon size={24} className="opacity-20 hover:" /> */}
               &nbsp;&nbsp;

@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getUserDetails } from "../../APIs/userDetails";
+import logo from '/src/assets/deeptrace_logo_transparent.png'
+
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -17,8 +19,12 @@ function Home() {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
+      {/* <img src="deeptrace_logo_transparent.png" alt="DeepTrace Logo" className="h-24 w-24" /> */}
+      {/* <div className='flex gap-[30px]'> */}
+        <img src={logo} className='h-16 mb-16'></img>
       <div className="text-3xl">Hello {user.username} 👋</div>
-      <div className="text-6xl font-bold">This is the homepage</div>
+      <div className="text-6xl font-bold">Welcome to DeepTrace</div>
+      <div className="flex gap-4">
       <button
         onClick={() => {
           window.location.href = "/upload-video";
@@ -35,7 +41,7 @@ function Home() {
         className="px-4 py-2 bg-[#f1f3f5] text-[#1e1e1e] rounded-full font-semibold text-xl mt-6"
       >
         Chatbot
-      </button>
+      </button></div>
       <button
         onClick={() => {
           window.location.href = "http://localhost:5000/logout";
