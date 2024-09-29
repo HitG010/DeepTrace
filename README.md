@@ -2,7 +2,7 @@
 
 ## Teaser:
 
-Click for Video 👇🏻👇🏻
+### Click for Video 👇🏻👇🏻
 
 [![Watch the video](public/deeptrace_cover.png)](https://youtu.be/k2KG_4mlOEo)
 
@@ -30,6 +30,10 @@ DeepTrace integrates blockchain technology, similar to C2PA, to securely embed v
 
 Just like C2PA (Coalition for Content Provenance and Authenticity) technology embeds provenance data directly into content files to verify their origin and history, the Metadata-Embedded Blockchain in DeepTrace works similarly. It integrates blockchain verification details directly into the video’s metadata. This means that every time a video is created or modified, the authenticity and historical record of that content are securely embedded within the video itself. This embedded information, much like C2PA’s provenance data, allows anyone to easily trace and verify the video's integrity at any point in time, ensuring that the content is trustworthy and its origins are transparent.
 
+### Ensemble Learning:
+
+We are utilizing advanced AI/ML techniques, including technologies like ensemble learning and federated learning, to deliver robust results. Ensemble learning involves combining multiple AI models into a single model in a way that considers both bias and variance. We achieve this by aggregating the weights of all the models before the MLP/Segmentation Head, followed by adding downsampling layers.
+
 ### <u>Real-Time Detection:</u>
 
 Offers rapid analysis capabilities, allowing for immediate identification of potential deepfakes across various platforms and media channels, providing timely interventions.
@@ -37,6 +41,10 @@ Offers rapid analysis capabilities, allowing for immediate identification of pot
 ### <u>Business API Integration:</u>
 
 Provides a comprehensive API tailored for businesses, enabling seamless integration of DeepTrace's deepfake detection capabilities into existing workflows and platforms. This allows organizations to safeguard their content and ensure the authenticity of media shared within and outside the company, while maintaining high standards of privacy and security.
+
+### Third Party Integration:
+
+As the world of deepfake generation continues to evolve, we need to stay ahead of the curve. Therefore, we will invite major companies and developers to integrate their APIs into our product. We will test these APIs on our custom-generated dataset to reduce bias and variance.
 
 ## Workflow and Images
 
@@ -89,3 +97,14 @@ python3 ../../app.py
 ```
 
 ### Lastly set up neoX destnet on your metamask wallet and get some test tokens from [here](https://neoxwish.ngd.network/).
+
+## Our Contact info
+
+Team Name : < FigureOut />
+
+Team Members : Kartik Bindra, Hitesh Gupta, Devyansh
+Bhattacharya
+
+[Email](mailto:bindrakartik64@gmail.com)
+
+Phone : +91 8595867129
