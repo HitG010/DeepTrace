@@ -25,7 +25,7 @@ contract VideoStorage {
     
     // Add video along with its deepfake result to the blockchain
     function addVideo(bytes32 videoHash, string memory result) public {
-        require(videoResults[videoHash].videoHash == bytes32(0), "Video already analyzed and exists on blockchain.");
+        // require(videoResults[videoHash].videoHash == bytes32(0), "Video already analyzed and exists on blockchain.");
         
         // Create the VideoResult struct
         VideoResult memory newVideo = VideoResult({
@@ -38,9 +38,9 @@ contract VideoStorage {
         videoResults[videoHash] = newVideo;
         
         // Add the video to the user's uploaded videos
-        if(users[msg.sender].userAddress == address(0)){
-            users[msg.sender].userAddress = msg.sender;
-        }
+        // if(users[msg.sender].userAddress == address(0)){
+        //     users[msg.sender].userAddress = msg.sender;
+        // }
         users[msg.sender].uploadedVideos.push(newVideo);
         
         // Emit an event for the new video upload
@@ -48,8 +48,8 @@ contract VideoStorage {
     }
     
     // Retrieve all videos uploaded by a specific user
-    function getUserVideos(address userAddress) public view returns (VideoResult[] memory) {
-        return users[userAddress].uploadedVideos;
+    function getUserVideos(address userAddress) public view returns (bytes32) {
+        return users[userAddress].uploadedVideos[0].videoHash;
     }
     
     // Retrieve a video result by its hash

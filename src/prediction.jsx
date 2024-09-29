@@ -2,6 +2,7 @@ import { ArrowLeft, Loader, InfoIcon } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadVideo } from "./contractDeets.jsx";
+// import { exec } from "child_process";
 
 function VideoUpload() {
   const navigate = useNavigate();
@@ -14,6 +15,24 @@ function VideoUpload() {
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
+
+  // update the metadata of the video with the result of the deepfake detection
+  // const metadataUpdate = async (file, result, accuracy) => {
+  //   // const filePath = file.name;
+  //   fetch("http://localhost:5000/metadata-update", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ filename: file.name, result: result, accuracy: accuracy }),
+  //   })
+  //     .then((response) => {
+  //       console.log("Metadata updated successfully");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error updating metadata:", error);
+  //     });
+  // };
 
   const handleUpload = async () => {
     if (!file) {
@@ -41,8 +60,10 @@ function VideoUpload() {
       setResult(data);
 
       if (data.mean_score < 0.5) {
+        // metadataUpdate(file, "Real", data.mean_score*100);
         uploadVideo(file, "Real");
       } else {
+        // metadataUpdate(file, "Deepfake", data.mean_score*100);
         uploadVideo(file, "Deepfake");
       }
 

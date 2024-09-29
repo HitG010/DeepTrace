@@ -1,11 +1,12 @@
 import { ethers } from 'ethers';
 import VideoStorage from './artifacts/contracts/Upload.sol/VideoStorage.json';
 import { Buffer } from 'buffer';
-
+import { set } from 'mongoose';
+import { useState } from 'react';
+import { User } from 'lucide-react';
 window.Buffer = Buffer;
-let contractGlobal = null;
 let account = '';
-
+let contractGlobal = null;
 async function loadProvider() {
   // Ensure the provider is loaded only if Metamask is available
   if (window.ethereum) {
@@ -16,9 +17,10 @@ async function loadProvider() {
     await newProvider.send('eth_requestAccounts', []);
     const signer = newProvider.getSigner();
     account = await signer.getAddress();
+    console.log(account);
     
     // Load contract
-    const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+    const contractAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
     const newContract = new ethers.Contract(contractAddress, VideoStorage.abi, signer);
     contractGlobal = newContract;
     
@@ -31,8 +33,9 @@ async function loadProvider() {
 }
 
 // Call the async function to load provider and contract
-loadProvider();
+await loadProvider();
 
+// uploading video to the blockchain
   const uploadVideo = async (file, result) => {
     if (!contractGlobal || !file) {
       console.error('Contract not loaded');
@@ -45,6 +48,7 @@ loadProvider();
       
       // Call the contract function
       try {
+        console.log('Uploading video:', videoHash);
         const tx = await contractGlobal.addVideo(videoHash, result);
         await tx.wait();
         console.log('Video uploaded successfully');
@@ -53,8 +57,38 @@ loadProvider();
         console.error('Error uploading video:', err);
         alert('An error occurred while uploading the video.');
       }
+    }
+
+    // fetching the user details of the uploaded videos data ( all )
+    const fetchVideos = async () => {
+      await loadProvider();
+      if (!contractGlobal) {
+        console.error('Contract not loaded');
+        return;
+      }
+      
+      try {
+        // console.log(`In fetchVideos : ${account}`);
+        const isBrowser = typeof window !== "undefined";
+        const newProvider = isBrowser ? new ethers.providers.Web3Provider(window.ethereum) : null;
+        const signer = newProvider.getSigner();
+        const UserAccount = await signer.getAddress();
+        console.log(UserAccount);
+        console.log(contractGlobal);
+        const videos = await contractGlobal.getUserVideos(UserAccount)
+        .then((res) => {
+          if(res.length === 0) {
+            alert('No videos found');
+          }
+          // console.log(res);
+        });
+        console.log('Fetched videos:', videos);
+        return videos;
+      } catch (err) {
+        console.error('Error fetching videos:', err);
+        alert('An error occurred while fetching videos.');
+      }
     };
 
-
-  export { uploadVideo };
+  export { uploadVideo, fetchVideos, loadProvider };
   

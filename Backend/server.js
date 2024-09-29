@@ -1,4 +1,5 @@
 const express = require("express");
+const { exec } = require("child_process");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -8,6 +9,7 @@ const User = require("./Models/user");
 const MongoStore = require("connect-mongo");
 require("dotenv").config();
 const userRoutes = require("./Routes/userRoutes");
+const path = require('path');
 
 const mongoURI =
   "mongodb+srv://bindrakartik64:tazQbHPsNKxybIps@deeptrace.km0n1.mongodb.net/?retryWrites=true&w=majority&appName=DeepTrace";
@@ -54,7 +56,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(
-  cors({
+    cors({
     origin: "http://localhost:5173",
     credentials: true, // If using cookies for authentication
   })
@@ -144,6 +146,29 @@ app.get("/logout", (req, res) => {
 });
 
 app.use(userRoutes);
+
+app.post("/metadata-update", (req, res) => {
+  const filePath = path.resolve(__dirname, req.body.filename);
+  const result = req.body.result;
+  const accuracy = req.body.accuracy;
+
+  const command = `cd "C:/Users/Kartik/Downloads/exiftool-12.97_64/exiftool-12.97_64" && exiftool -Title="This video is ${result}" -Description="Deepfake Detection Prediction: ${accuracy}%" ${filePath}`;
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error: ${error.message}`);
+      return res.status(500).send('Error executing ExifTool');
+    }
+    if (stderr) {
+      console.error(`Stderr: ${stderr}`);
+      return res.status(500).send('ExifTool encountered an error');
+    }
+    res.send(`Metadata updated successfully! Output: ${stdout}`);
+  });
+
+  // console.log("Metadata updated:", req.body);
+  // res.send("Metadata updated successfully");
+});
 
 // app.get('/', (req, res) => {
 //     res.send('Hello World!');

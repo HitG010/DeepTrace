@@ -1,12 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getUserDetails } from "../../APIs/userDetails";
+import { fetchVideos, loadProvider } from "../../contractDeets";
 import logo from '/src/assets/deeptrace_logo_transparent.png'
 
 
 function Home() {
   const [user, setUser] = useState(null);
-
+  // const [account, setAccount] = useState(null);
+  async function getUserAddress() {
+    await newProvider.send('eth_requestAccounts', []);
+    const signer = newProvider.getSigner();
+    const Useraccount = await signer.getAddress();
+    setAccount(Useraccount);
+  }
   useEffect(() => {
     const fetchUserDetails = async () => {
       const userDetails = await getUserDetails();
@@ -14,6 +21,17 @@ function Home() {
     };
     fetchUserDetails();
   }, []);
+
+  // using fetchVideos function to get the videos data
+  // useEffect(() => {
+  //   // loadProvider();
+  //   // const contract = sendcontractAdd();
+  //   const fetchVideosData = async () => {
+  //     const videos = await fetchVideos();
+  //     console.log("Fetched videos:", videos);
+  //   };
+  //   fetchVideosData();
+  // }, []);
 
   if (!user) return <div>Loading...</div>;
 
@@ -24,7 +42,7 @@ function Home() {
         <img src={logo} className='h-16 mb-16'></img>
       <div className="text-3xl">Hello {user.username} 👋</div>
       <div className="text-6xl font-bold">Welcome to DeepTrace</div>
-      <div className="flex gap-4">
+      <div className="flex gap-4++">
       <button
         onClick={() => {
           window.location.href = "/upload-video";
