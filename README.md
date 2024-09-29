@@ -105,6 +105,6 @@ Team Name : < FigureOut />
 Team Members : Kartik Bindra, Hitesh Gupta, Devyansh
 Bhattacharya
 
-[Email](mailto:bindrakartik64@gmail.com)
+[Email](mailto:guptahitesh201105@gmail.com)
 
 Phone : +91 8595867129
