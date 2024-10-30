@@ -1,9 +1,6 @@
 import { ethers } from 'ethers';
 import VideoStorage from './artifacts/contracts/Upload.sol/VideoStorage.json';
 import { Buffer } from 'buffer';
-import { set } from 'mongoose';
-import { useState } from 'react';
-import { User } from 'lucide-react';
 window.Buffer = Buffer;
 let account = '';
 let contractGlobal = null;
@@ -20,7 +17,7 @@ async function loadProvider() {
     console.log(account);
     
     // Load contract
-    const contractAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+    const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
     const newContract = new ethers.Contract(contractAddress, VideoStorage.abi, signer);
     contractGlobal = newContract;
     

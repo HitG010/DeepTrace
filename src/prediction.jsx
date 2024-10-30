@@ -1,8 +1,13 @@
 import { ArrowLeft, Loader, InfoIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { uploadVideo } from "./contractDeets.jsx";
-// import { exec } from "child_process";
+// import { uploadVideo } from "./contractDeets.jsx";
+import { ethers } from 'ethers';
+import VideoStorage from './artifacts/contracts/Upload.sol/VideoStorage.json';
+import { Buffer } from 'buffer';
+import axios from "axios";
+import process from 'process';
+import multihashes from 'multihashes';
 
 function VideoUpload() {
   const navigate = useNavigate();
@@ -16,23 +21,98 @@ function VideoUpload() {
     setFile(e.target.files[0]);
   };
 
-  // update the metadata of the video with the result of the deepfake detection
-  // const metadataUpdate = async (file, result, accuracy) => {
-  //   // const filePath = file.name;
-  //   fetch("http://localhost:5000/metadata-update", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ filename: file.name, result: result, accuracy: accuracy }),
-  //   })
-  //     .then((response) => {
-  //       console.log("Metadata updated successfully");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error updating metadata:", error);
-  //     });
-  // };
+  // blockchain functions and utilities
+  const [account, setAccount] = useState('');
+  const [contract, setContract] = useState(null);
+  const [videos, setVideos] = useState([]);
+  // const [videoHash, setVideoHash] = useState('');
+
+  useEffect(() => {
+    async function loadProvider() {
+      // Ensure the provider is loaded only if Metamask is available
+      if (window.ethereum) {
+        const isBrowser = typeof window !== "undefined";
+        const newProvider = isBrowser ? new ethers.providers.Web3Provider(window.ethereum) : null;
+        
+        // Request wallet connection and get account details
+        await newProvider.send('eth_requestAccounts', []);
+        const signer = newProvider.getSigner();
+        const Useraccount = await signer.getAddress();
+        setAccount(Useraccount);
+        
+        // Load contract
+        const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+        const newContract = new ethers.Contract(contractAddress, VideoStorage.abi, signer);
+        setContract(newContract);
+        
+        console.log('Connected account:', account);
+        console.log('Contract:', newContract);
+      } else {
+        console.error('Ethereum object not found, install MetaMask.');
+        alert('MetaMask not installed! Please install MetaMask to continue.');
+      }
+    }
+
+    loadProvider();
+  }, []);
+
+  // addVideo function
+  const uploadVideo = async (file, result) => {
+    if (!contract || !file) {
+      console.error('Contract not loaded');
+      return;
+    }
+    try{
+      const formData = new FormData();
+      formData.append("file", file);
+      //using Pinata SDK to upload the video to IPFS and then get the hash
+      const resFile = await axios({
+        method: 'post',
+        url: 'https://api.pinata.cloud/pinning/pinFileToIPFS',
+        headers: {
+          'Content-Type': "multipart/form-data",
+          'pinata_api_key': "14cbfa5b8e02de8adae9",
+          'pinata_secret_api_key': "ddef17076bf1b4244d06c8a010743a1cefd8a5b483ea9cec3d1e1c1429a117ae"
+
+        },
+        data: formData
+      });
+
+      console.log('File uploaded to IPFS:', resFile.data.IpfsHash);
+      const ipfshash = resFile.data.IpfsHash;
+      // setVideoHash(ipfshash);
+      
+      // arrify the hash
+      const deocdedHash = multihashes.decode(multihashes.fromB58String(ipfshash));
+      const videoHash = Buffer.from(deocdedHash.digest).toString('hex');
+      
+      console.log('Video Hash:', videoHash);
+        const tx = await contract.addVideo(videoHash, result);
+        await tx.wait();
+        console.log('Video uploaded successfully');
+        alert('Video uploaded successfully');
+    }
+    catch(err){
+      console.log(err);
+      alert('An error occurred while uploading the video.');
+    }
+  }
+
+  // get user videos function
+  const fetchUserVideos = async () => {
+    if(!contract){
+      console.error('Contract not loaded');
+      return;
+    }
+    try {
+      const videos = await contract.getUserVideos(account);
+      console.log('Fetched videos:', videos);
+      return videos;
+    } catch (err) {
+      console.error('Error fetching videos:', err);
+      alert('An error occurred while fetching videos.');
+    }
+  }
 
   const handleUpload = async () => {
     if (!file) {
@@ -60,10 +140,8 @@ function VideoUpload() {
       setResult(data);
 
       if (data.mean_score < 0.5) {
-        // metadataUpdate(file, "Real", data.mean_score*100);
         uploadVideo(file, "Real");
       } else {
-        // metadataUpdate(file, "Deepfake", data.mean_score*100);
         uploadVideo(file, "Deepfake");
       }
 
