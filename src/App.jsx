@@ -24,7 +24,7 @@ function App() {
         <Route path="/upload-video" element={<VideoUpload />} />
         <Route path="/result" element={<Result />} />
         <Route path="/contract" element={<Result />} />
-        <Route path="/image-predict" element={<ImagePredict />} />
+        <Route path="/upload-image" element={<ImagePredict />} />
         {/* <Route path="/contract" element={<ContractDeets />} /> */}
       </Routes>
     </Router>
