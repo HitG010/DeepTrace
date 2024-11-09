@@ -8,6 +8,7 @@ import { Buffer } from 'buffer';
 import axios from "axios";
 import process from 'process';
 import multihashes from 'multihashes';
+import Navbar from "./components/Navbar/navbar2";
 
 function VideoUpload() {
   const navigate = useNavigate();
@@ -156,6 +157,7 @@ function VideoUpload() {
 
   return (
     <div className="relative flex flex-col justify-center items-center h-screen">
+    <Navbar active={1}/>
       {/* Loader Mask */}
       {LoaderActive && (
         <div className="absolute inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60">
@@ -173,12 +175,12 @@ function VideoUpload() {
         }`}
       >
         <div className="tiers flex flex-col gap-4">
-          <button
+          {/* <button
             className="w-fit flex items-center gap-2 py-2.5 px-5 bg-[#1e1e1e] hover:bg-[#252525] text-[#f1f3f5] text-[0.85rem] rounded-full"
             onClick={() => navigate("/home")}
           >
             <ArrowLeft /> Return To Homepage
-          </button>
+          </button> */}
           <div className="text-5xl font-semibold">Upload Video</div>
           <div className="text-2xl font-medium">Select A Tier</div>
           {/* Tier selection */}
