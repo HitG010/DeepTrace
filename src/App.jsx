@@ -10,6 +10,7 @@ import Login from "./components/Login/Login.jsx";
 import VideoUpload from "./prediction.jsx";
 import Result from "./components/Result.jsx";
 import ImagePredict from "./imagePrediction.jsx";
+import ImageResult from "./components/imageResult.jsx";
 // import {ContractDeets} from "./contractDeets.jsx";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/result" element={<Result />} />
         <Route path="/contract" element={<Result />} />
         <Route path="/upload-image" element={<ImagePredict />} />
+        <Route path="/image-result" element={<ImageResult />} />
         {/* <Route path="/contract" element={<ContractDeets />} /> */}
       </Routes>
     </Router>

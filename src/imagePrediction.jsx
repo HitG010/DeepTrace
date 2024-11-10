@@ -2,12 +2,12 @@ import { ArrowLeft, Loader, InfoIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { uploadVideo } from "./contractDeets.jsx";
-import { ethers } from 'ethers';
-import VideoStorage from './artifacts/contracts/Upload.sol/VideoStorage.json';
-import { Buffer } from 'buffer';
+import { ethers } from "ethers";
+import VideoStorage from "./artifacts/contracts/Upload.sol/VideoStorage.json";
+import { Buffer } from "buffer";
 import axios from "axios";
-import process from 'process';
-import multihashes from 'multihashes';
+import process from "process";
+import multihashes from "multihashes";
 import Navbar from "./components/Navbar/navbar2";
 
 function ImagePredict() {
@@ -23,7 +23,7 @@ function ImagePredict() {
   };
 
   // blockchain functions and utilities
-  const [account, setAccount] = useState('');
+  const [account, setAccount] = useState("");
   const [contract, setContract] = useState(null);
   const [videos, setVideos] = useState([]);
   // const [videoHash, setVideoHash] = useState('');
@@ -33,24 +33,30 @@ function ImagePredict() {
       // Ensure the provider is loaded only if Metamask is available
       if (window.ethereum) {
         const isBrowser = typeof window !== "undefined";
-        const newProvider = isBrowser ? new ethers.providers.Web3Provider(window.ethereum) : null;
-        
+        const newProvider = isBrowser
+          ? new ethers.providers.Web3Provider(window.ethereum)
+          : null;
+
         // Request wallet connection and get account details
-        await newProvider.send('eth_requestAccounts', []);
+        await newProvider.send("eth_requestAccounts", []);
         const signer = newProvider.getSigner();
         const Useraccount = await signer.getAddress();
         setAccount(Useraccount);
-        
+
         // Load contract
-        const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-        const newContract = new ethers.Contract(contractAddress, VideoStorage.abi, signer);
+        const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+        const newContract = new ethers.Contract(
+          contractAddress,
+          VideoStorage.abi,
+          signer
+        );
         setContract(newContract);
-        
-        console.log('Connected account:', account);
-        console.log('Contract:', newContract);
+
+        console.log("Connected account:", account);
+        console.log("Contract:", newContract);
       } else {
-        console.error('Ethereum object not found, install MetaMask.');
-        alert('MetaMask not installed! Please install MetaMask to continue.');
+        console.error("Ethereum object not found, install MetaMask.");
+        alert("MetaMask not installed! Please install MetaMask to continue.");
       }
     }
 
@@ -60,60 +66,61 @@ function ImagePredict() {
   // addVideo function
   const uploadVideo = async (file, result) => {
     if (!contract || !file) {
-      console.error('Contract not loaded');
+      console.error("Contract not loaded");
       return;
     }
-    try{
+    try {
       const formData = new FormData();
       formData.append("file", file);
       //using Pinata SDK to upload the image to IPFS and then get the hash
       const resFile = await axios({
-        method: 'post',
-        url: 'https://api.pinata.cloud/pinning/pinFileToIPFS',
+        method: "post",
+        url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
         headers: {
-          'Content-Type': "multipart/form-data",
-          'pinata_api_key': "14cbfa5b8e02de8adae9",
-          'pinata_secret_api_key': "ddef17076bf1b4244d06c8a010743a1cefd8a5b483ea9cec3d1e1c1429a117ae"
-
+          "Content-Type": "multipart/form-data",
+          pinata_api_key: "14cbfa5b8e02de8adae9",
+          pinata_secret_api_key:
+            "ddef17076bf1b4244d06c8a010743a1cefd8a5b483ea9cec3d1e1c1429a117ae",
         },
-        data: formData
+        data: formData,
       });
 
-      console.log('File uploaded to IPFS:', resFile.data.IpfsHash);
+      console.log("File uploaded to IPFS:", resFile.data.IpfsHash);
       const ipfshash = resFile.data.IpfsHash;
       // setVideoHash(ipfshash);
-      
+
       // arrify the hash
-      const deocdedHash = multihashes.decode(multihashes.fromB58String(ipfshash));
-      const videoHash = Buffer.from(deocdedHash.digest).toString('hex');
-      
-      console.log('Video Hash:', videoHash);
-        const tx = await contract.addVideo(videoHash, result);
-        await tx.wait();
-        console.log('Video uploaded successfully');
-        alert('Video uploaded successfully');
-    }
-    catch(err){
+      const deocdedHash = multihashes.decode(
+        multihashes.fromB58String(ipfshash)
+      );
+      const videoHash = Buffer.from(deocdedHash.digest).toString("hex");
+
+      console.log("Video Hash:", videoHash);
+      const tx = await contract.addVideo(videoHash, result);
+      await tx.wait();
+      console.log("Video uploaded successfully");
+      alert("Video uploaded successfully");
+    } catch (err) {
       console.log(err);
-      alert('An error occurred while uploading the video.');
+      alert("An error occurred while uploading the video.");
     }
-  }
+  };
 
   // get user videos function
   const fetchUserVideos = async () => {
-    if(!contract){
-      console.error('Contract not loaded');
+    if (!contract) {
+      console.error("Contract not loaded");
       return;
     }
     try {
       const videos = await contract.getUserVideos(account);
-      console.log('Fetched videos:', videos);
+      console.log("Fetched videos:", videos);
       return videos;
     } catch (err) {
-      console.error('Error fetching videos:', err);
-      alert('An error occurred while fetching videos.');
+      console.error("Error fetching videos:", err);
+      alert("An error occurred while fetching videos.");
     }
-  }
+  };
 
   const handleUpload = async () => {
     if (!file) {
@@ -145,7 +152,9 @@ function ImagePredict() {
         uploadVideo(file, "Deepfake");
       }
 
-      navigate("/result", { state: { result: data, fileName: file.name } });
+      navigate("/image-result", {
+        state: { result: data, fileName: file.name },
+      });
     } catch (error) {
       console.error(error);
       alert("An error occurred while uploading the video.");
@@ -156,7 +165,7 @@ function ImagePredict() {
 
   return (
     <div className="relative flex flex-col justify-center items-center h-screen">
-    <Navbar active={2}/>
+      <Navbar active={2} />
       {/* Loader Mask */}
       {LoaderActive && (
         <div className="absolute inset-0 z-50 flex justify-center items-center bg-black bg-opacity-60">
@@ -272,7 +281,11 @@ function ImagePredict() {
             </div>
           ) : (
             <div>
-              <img src={URL.createObjectURL(file)} alt="Uploaded Image" className="h-56 w-128 object-contain" />
+              <img
+                src={URL.createObjectURL(file)}
+                alt="Uploaded Image"
+                className="h-56 w-128 object-contain"
+              />
             </div>
           )}
           <div className="flex gap-4 justify-center items-center">

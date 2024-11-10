@@ -4,6 +4,8 @@ import numpy as np
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import matplotlib.pyplot as plt
+from PIL import Image
+import io
 from scipy.special import expit
 
 import sys
@@ -89,6 +91,43 @@ def upload_video():
         print("Error:", str(e))  # Log the error message
         return jsonify({"error": str(e)}), 500
 
+face_extractor = FaceExtractor(facedet=facedet)
+def get_face(image):
+    # Extract face from the image
+    face_data = face_extractor.process_image(img=image)
+    if 'faces' in face_data and len(face_data['faces']) > 0:
+        return face_data['faces'][0]  # Return the face with the highest confidence
+    return None
+
+def predict_face(face):
+    # Transform the face and make a prediction
+    face_t = transf(image=face)['image']
+    with torch.no_grad():
+        score = torch.sigmoid(net(face_t.unsqueeze(0).to(device))).item()
+    return score
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    print("Received request")
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
+    
+    file = request.files['image']
+    print("Received file:", file.filename)
+    image = Image.open(io.BytesIO(file.read())).convert('RGB')
+
+    # Extract face
+    face = get_face(image)
+    print("Face:", face)
+    if face is None:
+        return jsonify({"error": "No face detected"}), 400
+
+    # Predict score
+    score = predict_face(face)
+    print("Score:", score)
+    result = "FAKE" if score > 0.5 else "REAL"
+    print("Result:", result)
+    return jsonify({"score": score, "result": result}), 200
 
 @app.after_request
 def add_headers(response):
